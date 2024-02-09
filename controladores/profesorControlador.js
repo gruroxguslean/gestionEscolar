@@ -59,9 +59,20 @@ const mostrarProximosEventos = (req,res) => {
 	})
 	res.status(200).json({message:"Proximos eventos del profesor",profesoresProximosEventos})
 }
+
+const eliminarProfesorMateria = (req,res) => {
+  const profId = req.params.id;
+  const matId = req.body.matId;
+
+  req.session.clases = req.session.clases.filter(clase=> clase.profId != profId || clase.matId != matId);
+  
+  res.status(200).json({message:"Eliminada Asociación Profesor Materia",clases:req.session.clases});
+}
+
 module.exports = {
   crearGet,
   crearPost,
   mostrarProfesorMateria,
-  mostrarProximosEventos
+  mostrarProximosEventos,
+  eliminarProfesorMateria
 }
