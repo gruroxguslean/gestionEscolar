@@ -35,3 +35,18 @@ describe("POST /eventos/ingresar-evento",()=>{
   })
 })
 
+describe("PUT /eventos/editar-evento",()=>{
+  it("deberia editar de forma exitosa el evento", async () => {
+    const response = await agent.put("/eventos/editar-evento/0").type('json').send({claseId:0,fecha:"2024-02-12T22:00:00-04:00",tipo:1});
+    expect(response.status).toBe(200);
+    expect(response.body.eventos).toEqual([{claseId:0,fecha:"2024-02-12T22:00:00-04:00",tipo:1}])
+  })
+})
+
+describe("DELETE /eventos/eliminar-evento",()=>{
+  it("deberia eliminar de forma exitosa el evento", async () => {
+    const response = await agent.delete("/eventos/eliminar-evento/0").type('json');
+    expect(response.status).toBe(200);
+    expect(response.body.eventos).toEqual([])
+  })
+})

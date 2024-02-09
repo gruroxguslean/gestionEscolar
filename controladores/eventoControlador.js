@@ -26,7 +26,25 @@ const crearPost = (req,res) => {
 
 }
 
+const editar = (req,res) => {
+  const eventoId = req.params.id;
+  req.session.eventos[eventoId].tipo = req.body.tipo;
+  req.session.eventos[eventoId].fecha = req.body.fecha;
+  req.session.eventos[eventoId].claseId = req.body.claseId;
+
+  res.status(200).json({message:"Evento editado",eventos:req.session.eventos});
+}
+
+const eliminar = (req,res) => {
+  const eventoId = req.params.id;
+  req.session.eventos.splice(eventoId,1)
+  res.status(200).json({message:"Evento eliminado",eventos:req.session.eventos});
+}
+
+
 module.exports = {
   crearGet,
   crearPost,
+  editar,
+  eliminar
 }
