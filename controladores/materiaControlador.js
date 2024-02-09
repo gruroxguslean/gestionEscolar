@@ -50,10 +50,36 @@ const editarMateriaProfesor = (req,res) => {
 
 }
 
+const mostrarSemana = (req,res) => {
+  const matId = req.params.id;
+  const clasesMateria = req.session.clases.filter(clase => clase.matId == matId);
+  const eventosFuturos = req.session.eventos.filter(evento=>clasesMateria[evento.claseId] != null && new Date(evento.fecha) >= new Date());
+  const eventosAnnoSemana = {};
+  eventosFuturos.forEach(evento=>{
+    const fecha = new Date(evento.fecha);
+    const anno = fecha.getFullYear();
+    const semana = fecha.getWeek();
+    if(!eventosAnnoSemana[anno])
+			eventosAnnoSemana[anno] = {};
+		if(!eventosAnnoSemana[anno][semana])
+    	eventosAnnoSemana[anno][semana] = [];
+    eventosAnnoSemana[anno][semana].push(evento);
+  })
+  console.log("Mostrando según formato")
+	res.format({
+		json:	()=> {res.status(200).json({message:"Eventos organizados por semanas del año",eventosAnnoSemana})},
+		html: ()=> {
+      res.render('mostrarEventosAnnoSemana',{eventosAnnoSemana,materia:req.session.materias[matId].nombre,title:"Eventos por Semana del año"})
+    }
+	})
+  
+}
+
 
 module.exports = {
   crearGet,
   crearPost,
   editar,
-  editarMateriaProfesor
+  editarMateriaProfesor,
+  mostrarSemana
 }
