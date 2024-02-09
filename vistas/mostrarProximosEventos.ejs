@@ -1,0 +1,23 @@
+<html lang="es">
+<%- include("./parciales/cabecera.ejs") %>
+
+<body>
+  <%- include("./parciales/barra.ejs") %>
+
+  <h1>Proximos eventos de los Profesores</h1>
+
+  <% Object.keys(profesoresProximosEventos).sort().forEach(nombreProf=>{ %>
+    <div>
+      <h2>Profesor <%= nombreProf %></h2>
+      <h3>Eventos: </h3>
+      <ul>
+      <% profersoresProximosEventos[nombreProf].forEach(evento=>{ %>
+        <li><strong>Tipo:</strong> <%= evento.tipo %> <strong>Fecha:</strong> <%= evento.fecha %> <strong>ClaseId:</strong> <%= evento.claseId %> </li>
+      <% }) %>
+      </ul>
+    </div>
+  <% }) %>
+
+  <%- include("./parciales/fondo.ejs") %>
+</body>
+</html>

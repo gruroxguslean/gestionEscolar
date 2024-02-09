@@ -57,7 +57,11 @@ const mostrarProximosEventos = (req,res) => {
 		const proximosEventos = req.session.eventos.filter(evento => clasesProfId.includes(evento.claseId) && new Date(evento.fecha) >= new Date() && new Date(evento.fecha) <= fechaLimite);
 		profesoresProximosEventos[profesor.nombre] = proximosEventos;
 	})
-	res.status(200).json({message:"Proximos eventos del profesor",profesoresProximosEventos})
+	res.format({
+		json:	()=> {res.status(200).json({message:"Proximos eventos del profesor",profesoresProximosEventos})},
+		html: ()=> {res.render('mostrarProximosEventos',profesoresProximosEventos,title:"Profesor Proximos Eventos")}
+	})
+  
 }
 
 const eliminarProfesorMateria = (req,res) => {

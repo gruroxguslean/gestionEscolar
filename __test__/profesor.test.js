@@ -62,6 +62,13 @@ describe("GET /profesores/mostrar-proximos-eventos",()=>{
     expect(response4.body.profesoresProximosEventos).toEqual({"Antonio":[{claseId:0,fecha:proximoDia.toJSON(),tipo:0},{claseId:0,fecha:pasadoMannana.toJSON(),tipo:0}]})
   })
 
+  it("deberia de devolver una vista con los eventos organizados primero por año y luego por semana", async () => {
+    const response = await agent.get("/profesores/mostrar-proximos-eventos/0").set('Accept', 'text/html');
+    expect(response.status).toBe(200);
+		expect(response.type).toBe('text/html');
+  })
+})
+
 describe("DELETE /profesores/eliminar-profesor-materia/:id",()=>{
   it("deberia eliminar la materia del profesor", async () => {
     const response = await agent.delete("/profesores/eliminar-profesor-materia/0").type('json').send({matId:1});
