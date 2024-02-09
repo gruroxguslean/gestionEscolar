@@ -42,3 +42,23 @@ describe("GET /profesores/mostrar-profesores-materia",()=>{
   })
 })
 
+describe("GET /profesores/mostrar-proximos-eventos",()=>{
+  it("deberia retornar de forma exitosa los proximos eventos del profesor", async () => {
+    const hoy = new Date();
+    const proximoDia = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate()+1,12,0,0);
+    const response = await agent.post("/eventos/ingresar-evento").type('json').send({claseId:0,fecha:proximoDia.toJSON(),tipo:0});
+    expect(response.status).toBe(200);
+    expect(response.body.eventos).toEqual([{claseId:0,fecha:proximoDia.toJSON(),tipo:0}]);
+    const pasadoMannana = new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate()+2,12,0,0);
+    const response2 = await agent.post("/eventos/ingresar-evento").type('json').send({claseId:0,fecha:pasadoMannana.toJSON(),tipo:0});
+    expect(response2.status).toBe(200);
+    expect(response2.body.eventos).toEqual([{claseId:0,fecha:proximoDia.toJSON(),tipo:0},{claseId:0,fecha:pasadoMannana.toJSON(),tipo:0}]);
+    const siguienteMes = new Date(hoy.getFullYear(),hoy.getMonth()+1,hoy.getDate(),12,0,0)
+    const response3 = await agent.post("/eventos/ingresar-evento").type('json').send({claseId:0,fecha:siguienteMes.toJSON(),tipo:0});
+    expect(response3.status).toBe(200);
+    expect(response3.body.eventos).toEqual([{claseId:0,fecha:proximoDia.toJSON(),tipo:0},{claseId:0,fecha:pasadoMannana.toJSON(),tipo:0},{claseId:0,fecha:siguienteMes.toJSON(),tipo:0}]);
+    const response4 = await agent.get("/profesores/mostrar-proximos-eventos/0").set('Accept', 'application/json').type('json');
+    expect(response4.status).toBe(200);
+    expect(response4.body.profesoresProximosEventos).toEqual({"Antonio":[{claseId:0,fecha:proximoDia.toJSON(),tipo:0},{claseId:0,fecha:pasadoMannana.toJSON(),tipo:0}]})
+  })
+})

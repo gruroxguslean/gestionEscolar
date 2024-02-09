@@ -46,8 +46,22 @@ const mostrarProfesorMateria = (req,res) => {
     res.status(300).json({message:"No existen clases registradas"});
 }
 
+const mostrarProximosEventos = (req,res) => {
+	const profesoresProximosEventos = {};
+	req.session.profesores.forEach((profesor,profId)=>{
+		const clasesProfId = req.session.clases.reduce((indices,clase,i)=>{
+			if(clase.profId == profId) indices.push(i)
+			return indices
+		},[]);
+		const fechaLimite = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000) // 14 días después de ahora en milisegundos
+		const proximosEventos = req.session.eventos.filter(evento => clasesProfId.includes(evento.claseId) && new Date(evento.fecha) >= new Date() && new Date(evento.fecha) <= fechaLimite);
+		profesoresProximosEventos[profesor.nombre] = proximosEventos;
+	})
+	res.status(200).json({message:"Proximos eventos del profesor",profesoresProximosEventos})
+}
 module.exports = {
   crearGet,
   crearPost,
   mostrarProfesorMateria,
+  mostrarProximosEventos
 }

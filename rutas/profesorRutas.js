@@ -6,5 +6,6 @@ const router = express.Router();
 router.get('/ingresar-profesor',profesorControlador.crearGet);
 router.post('/ingresar-profesor',profesorControlador.crearPost);
 router.get('/mostrar-profesores-materia',profesorControlador.mostrarProfesorMateria);
+router.get('/mostrar-proximos-eventos/:id',profesorControlador.mostrarProximosEventos);
 
 module.exports = router;
