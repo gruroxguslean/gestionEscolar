@@ -36,9 +36,24 @@ const editar = (req,res) => {
     res.status(300).json({message:"No se encuentra el id de la materia"});
 }
 
+const editarMateriaProfesor = (req,res) => {
+  const profId = req.params.profId;
+  const matId = req.params.matId;
+  const nuevoProfId = req.body.nuevoProfId;
+  const nuevoMatId = req.body.nuevoMatId;
+
+  const claseId = req.session.clases.findIndex(clase=> clase.profId == profId && clase.matId == matId);
+  req.session.clases[claseId].profId = nuevoProfId;
+  req.session.clases[claseId].matId = nuevoMatId;
+
+  res.status(200).json({message:"Clase editada",clase:req.session.clases[claseId]});
+
+}
+
 
 module.exports = {
   crearGet,
   crearPost,
-  editar
+  editar,
+  editarMateriaProfesor
 }
