@@ -1,0 +1,27 @@
+<html lang="es">
+<%- include("./parciales/cabecera.ejs") %>
+
+<body>
+  <%- include("./parciales/barra.ejs") %>
+
+  <h1>Evento organizados por año y luego por semana de la materia <%= materia %></h1>
+
+  <% Object.keys(eventosAnnoSemana).sort().forEach(anno=>{ %>
+    <div>
+      <h2>Año: <%= anno %></h2>
+      <div>
+      <% Object.keys(eventosAnnoSemana[anno]).sort().forEach(semana=>{ %>
+        <h3>Semana <%= semana %></h3>
+        <ul>
+          <% eventosAnnoSemana[anno][semana].forEach(evento=>{ %>
+            <li><strong>Tipo:</strong> <%= evento.tipo %> <strong>Fecha:</strong> <%= evento.fecha %> <strong>ClaseId:</strong> <%= evento.claseId %> </li>
+          <% }) %>
+        </ul>
+      <% }) %>
+      </div>
+    </div>
+  <% }) %>
+
+  <%- include("./parciales/fondo.ejs") %>
+</body>
+</html>
